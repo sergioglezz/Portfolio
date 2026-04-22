@@ -1,1 +1,159 @@
-<h1>Pronto...</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio de Sergio González - Desarrollador">
+  <title>Sergio González · Dev</title>
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=YOUR_FONT&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       HEADER / NAV
+  ═══════════════════════════════════ -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="#" class="nav__logo">sergio.dev</a>
+      <ul class="nav__links">
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════
+         HERO
+    ═══════════════════════════════════ -->
+    <section class="hero" id="inicio">
+      <div class="container">
+        <p class="hero__greeting">Hola, soy</p>
+        <h1 class="hero__name">Sergio González</h1>
+        <p class="hero__role"><!-- Desarrollador Web / Backend / Lo que seas --></p>
+        <p class="hero__desc">
+          <!-- Frase corta que te defina. Ej: "Construyo cosas para internet desde un PC viejo en casa." -->
+        </p>
+        <div class="hero__actions">
+          <a href="#proyectos" class="btn btn--primary">Ver proyectos</a>
+          <a href="#contacto" class="btn btn--secondary">Contacto</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         SOBRE MÍ
+    ═══════════════════════════════════ -->
+    <section class="about section" id="sobre-mi">
+      <div class="container">
+        <h2 class="section__title">Sobre mí</h2>
+        <div class="about__grid">
+          <div class="about__img">
+            <img src="assets/img/foto.jpg" alt="Foto de Sergio" loading="lazy">
+          </div>
+          <div class="about__text">
+            <p><!-- Párrafo sobre ti --></p>
+            <p><!-- Otro párrafo si quieres --></p>
+            <a href="assets/cv.pdf" class="btn btn--outline" download>Descargar CV</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         SKILLS
+    ═══════════════════════════════════ -->
+    <section class="skills section" id="skills">
+      <div class="container">
+        <h2 class="section__title">Skills</h2>
+        <div class="skills__grid">
+          <!-- Repite este bloque por cada skill -->
+          <div class="skill-card">
+            <img src="assets/img/icons/docker.svg" alt="Docker" class="skill-card__icon">
+            <span class="skill-card__name">Docker</span>
+          </div>
+          <!-- ... -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         PROYECTOS
+    ═══════════════════════════════════ -->
+    <section class="projects section" id="proyectos">
+      <div class="container">
+        <h2 class="section__title">Proyectos</h2>
+        <div class="projects__grid">
+          <!-- Repite este bloque por cada proyecto -->
+          <article class="project-card">
+            <img src="assets/img/projects/proyecto1.png" alt="Nombre del proyecto" class="project-card__img" loading="lazy">
+            <div class="project-card__body">
+              <h3 class="project-card__title">Nombre del proyecto</h3>
+              <p class="project-card__desc">Descripción breve de qué hace y con qué está hecho.</p>
+              <div class="project-card__tags">
+                <span class="tag">Docker</span>
+                <span class="tag">Nginx</span>
+                <span class="tag">HTML</span>
+              </div>
+              <div class="project-card__links">
+                <a href="#" class="btn btn--sm" target="_blank" rel="noopener">GitHub</a>
+                <a href="#" class="btn btn--sm btn--outline" target="_blank" rel="noopener">Demo</a>
+              </div>
+            </div>
+          </article>
+          <!-- ... -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════
+         CONTACTO
+    ═══════════════════════════════════ -->
+    <section class="contact section" id="contacto">
+      <div class="container">
+        <h2 class="section__title">Contacto</h2>
+        <p class="contact__desc"><!-- Texto de invitación a contactar --></p>
+        <div class="contact__links">
+          <a href="mailto:gonzalezcastilla04@gmail.com" class="contact__link">
+            📧 gonzalezcastilla04@gmail.com
+          </a>
+          <a href="https://github.com/sergioglezz" class="contact__link" target="_blank" rel="noopener">
+            GitHub → sergioglezz
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 Sergio González · Hecho con ☕ y un PC viejo</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>
