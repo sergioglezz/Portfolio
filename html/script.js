@@ -243,25 +243,25 @@
       nf.type = 'bandpass';
       nf.Q.value = 1.2;
       nf.frequency.setValueAtTime(300, t);
-      nf.frequency.exponentialRampToValueAtTime(5000, t + 1.2);
-      nf.frequency.exponentialRampToValueAtTime(800, t + 2.4);
+      nf.frequency.exponentialRampToValueAtTime(5000, t + 0.8);
+      nf.frequency.exponentialRampToValueAtTime(800, t + 1.8);
       const ng = c.createGain();
       ng.gain.setValueAtTime(0.0001, t);
-      ng.gain.exponentialRampToValueAtTime(0.12, t + 0.6);
-      ng.gain.exponentialRampToValueAtTime(0.0001, t + 2.4);
+      ng.gain.exponentialRampToValueAtTime(0.12, t + 0.4);
+      ng.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
       n.connect(nf).connect(ng).connect(this.master);
       n.start(t);
       // Acorde de pad con ataque lento
       const lp = c.createBiquadFilter();
       lp.type = 'lowpass';
       lp.frequency.setValueAtTime(400, t);
-      lp.frequency.exponentialRampToValueAtTime(2600, t + 2.5);
-      lp.frequency.exponentialRampToValueAtTime(700, t + 7);
+      lp.frequency.exponentialRampToValueAtTime(2600, t + 1.6);
+      lp.frequency.exponentialRampToValueAtTime(700, t + 5.5);
       const pg = c.createGain();
       pg.gain.setValueAtTime(0.0001, t);
-      pg.gain.exponentialRampToValueAtTime(0.16, t + 1.6);
-      pg.gain.setValueAtTime(0.16, t + 4.2);
-      pg.gain.exponentialRampToValueAtTime(0.0001, t + 7.5);
+      pg.gain.exponentialRampToValueAtTime(0.16, t + 1.5);
+      pg.gain.setValueAtTime(0.16, t + 3.4);
+      pg.gain.exponentialRampToValueAtTime(0.0001, t + 6);
       lp.connect(pg).connect(this.master);
       [146.83, 220, 293.66, 369.99, 440, 659.25].forEach((f, i) => {
         [-6, 6].forEach(det => {
@@ -273,11 +273,10 @@
           og.gain.value = 0.05;
           o.connect(og).connect(lp);
           o.start(t);
-          o.stop(t + 7.6);
+          o.stop(t + 6.1);
         });
       });
-      [1174.66, 1479.98, 1760, 2349.32].forEach((f, i) => this.tone(f, { dur: 1.4, vol: 0.025, at: 1.1 + i * 0.09, attack: 0.02 }));
-      [1760, 2217.46, 2637, 3520].forEach((f, i) => this.tone(f, { dur: 1.6, vol: 0.02, at: 3.7 + i * 0.08, attack: 0.02 }));
+      [1760, 2217.46, 2637, 3520].forEach((f, i) => this.tone(f, { dur: 1.5, vol: 0.022, at: 1.55 + i * 0.07, attack: 0.02 }));
     },
   };
 
@@ -739,22 +738,27 @@
      ARRANQUE
      ============================================================ */
   const boot = $('#boot');
-  const BOOT_MS = reduced ? 1200 : 6300;
-  let bootTimer = null;
+  const BOOT_MS = reduced ? 1000 : 4400;
+  let bootTimer = null, shineTimer = null;
 
   function makeParticles() {
     const box = $('.boot-particles');
     box.innerHTML = '';
-    const n = reduced ? 0 : 46;
+    // Polvo de luz que fluye por la onda desde los lados y se reúne en el centro
+    const n = reduced ? 0 : 60;
+    const W = window.innerWidth, H = window.innerHeight;
     for (let i = 0; i < n; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 120 + Math.random() * Math.min(window.innerWidth, 900) * 0.55;
+      const side = i % 3 === 0 ? 1 : -1;               // la mayoría viene de la izquierda
+      const x0 = side * (W * (0.35 + Math.random() * 0.3));
+      const y0 = Math.sin(x0 / W * 5) * H * 0.07 + (Math.random() - 0.5) * H * 0.12;
       const s = document.createElement('span');
-      s.style.setProperty('--x', `${Math.cos(a) * r}px`);
-      s.style.setProperty('--y', `${Math.sin(a) * r * 0.45}px`);
-      s.style.setProperty('--s', `${1 + Math.random() * 3}px`);
-      s.style.setProperty('--dur', `${1.4 + Math.random() * 1.6}s`);
-      s.style.setProperty('--del', `${0.2 + Math.random() * 0.5}s`);
+      s.style.setProperty('--x0', `${x0}px`);
+      s.style.setProperty('--y0', `${y0}px`);
+      s.style.setProperty('--x1', `${(Math.random() - 0.5) * 60}px`);
+      s.style.setProperty('--y1', `${(Math.random() - 0.5) * 16}px`);
+      s.style.setProperty('--s', `${1 + Math.random() * 2.6}px`);
+      s.style.setProperty('--dur', `${0.9 + Math.random() * 0.6}s`);
+      s.style.setProperty('--del', `${0.15 + Math.random() * 0.55}s`);
       box.appendChild(s);
     }
   }
@@ -764,8 +768,13 @@
     boot.classList.remove('done', 'gone', 'playing');
     void boot.offsetWidth;
     boot.classList.add('playing');
+    body.classList.add('booting');
     Sound.boot();
     clearTimeout(bootTimer);
+    clearTimeout(shineTimer);
+    // brillo que cruza el logo cuando terminan de dibujarse las letras
+    const shine = document.getElementById('sgc-shine-anim');
+    if (shine && shine.beginElement && !reduced) shineTimer = setTimeout(() => shine.beginElement(), 2000);
     bootTimer = setTimeout(finishBoot, BOOT_MS);
   }
 
@@ -774,7 +783,8 @@
     if (state.ready) return;
     session.set('xmb-booted', '1');
     boot.classList.add('done');
-    setTimeout(() => boot.classList.add('gone'), 1000);
+    body.classList.remove('booting');   // la onda recupera el color del tema
+    setTimeout(() => boot.classList.add('gone'), 1200);
     enterMenu();
   }
 

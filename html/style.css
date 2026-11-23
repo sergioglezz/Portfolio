@@ -646,52 +646,70 @@ kbd {
   box-shadow: 0 0 8px #fff;
   opacity: 0;
 }
-.boot-logo { width: min(560px, 74vw); opacity: 0; }
-img.boot-logo { display: block; height: auto; }
-.logo-portfolio img { display: block; width: 100%; height: auto; }
-.logo-portfolio { position: relative; }
-.shine {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0) 38%, #fff 50%, rgba(255, 255, 255, 0) 62%, transparent 70%) no-repeat;
-  background-size: 250% 100%;
-  background-position: 150% 0;
-  -webkit-mask: url(assets/img/Portfolio.png) center / 100% auto no-repeat;
-  mask: url(assets/img/Portfolio.png) center / 100% auto no-repeat;
-  filter: drop-shadow(0 0 6px #fff);
+/* Logo SGC: letras plateadas que se dibujan con luz y un brillo que las cruza */
+.boot-logo { width: min(460px, 72vw); opacity: 0; text-align: center; }
+.sgc-logo { display: block; width: 100%; height: auto; overflow: visible; }
+.sgc-letters path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.sgc-sub {
+  margin-top: 18px;
+  font-size: clamp(11px, 1.6vw, 14px);
+  font-weight: 300;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
 }
 
-#boot.playing .boot-flash    { animation: flash 2.2s ease-out 0.15s both; }
-#boot.playing .boot-streak   { animation: streak 1.7s var(--ease) 0.1s both; }
-#boot.playing .boot-particles span { animation: particle var(--dur) cubic-bezier(0.1, 0.7, 0.3, 1) var(--del) both; }
-#boot.playing .logo-sgc      { animation: logo 2.5s ease 1s both; }
-#boot.playing .logo-portfolio { animation: logo 2.6s ease 3.5s both; }
-#boot.playing .shine         { animation: shine 1.5s ease-in-out 4.1s both; }
+/* Intro estilo consola (~4,4 s):
+   1) en negro aparece la onda en blanco y gris
+   2) polvo de luz fluye por la onda y se reúne en el centro
+   3) destello suave y aparece el logo con un brillo; luego se funde
+   4) la onda recupera el color y entra el menú */
+body.booting #bg { opacity: 1; filter: grayscale(1) contrast(1.5) brightness(0.85); }
+#bg { transition: opacity 1.6s ease, filter 2s ease; }
+#boot.playing { background: rgba(0, 0, 0, 0.6); animation: waveIn 1.4s ease both; }
+#boot.done { transition: opacity 1.2s ease; }
+.sgc-letters path { stroke-dashoffset: 0; }
 
-@keyframes flash {
-  0%   { opacity: 0; transform: scale(0.2); }
+#boot.playing .boot-particles span { animation: stream var(--dur) cubic-bezier(0.45, 0, 0.25, 1) var(--del) both; }
+#boot.playing .boot-flash    { animation: flash 1.6s ease-out 1.35s both; }
+#boot.playing .boot-streak   { animation: streak 1.3s var(--ease) 1.3s both; }
+#boot.playing .boot-logo     { animation: logo 2.9s ease 1.5s both; }
+#boot.playing .sgc-logo      { animation: glow 1.6s ease-out 1.6s both; }
+#boot.playing .sgc-sub       { animation: subIn 1.2s var(--ease) 1.9s both; }
+
+@keyframes waveIn { from { background: #000; } to { background: rgba(0, 0, 0, 0.6); } }
+@keyframes stream {
+  0%   { opacity: 0; transform: translate(var(--x0), var(--y0)) scale(1); }
   25%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--x1), var(--y1)) scale(0.4); }
+}
+@keyframes flash {
+  0%   { opacity: 0; transform: scale(0.15); }
+  25%  { opacity: 0.9; }
   100% { opacity: 0; transform: scale(1); }
 }
 @keyframes streak {
   0%   { opacity: 0; transform: scaleX(0) scaleY(1); }
   35%  { opacity: 1; transform: scaleX(1) scaleY(1); }
-  100% { opacity: 0; transform: scaleX(1.1) scaleY(40); }
-}
-@keyframes particle {
-  0%   { opacity: 0; transform: translate(0, 0) scale(0.4); }
-  15%  { opacity: 1; }
-  100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1); }
+  100% { opacity: 0; transform: scaleX(1.1) scaleY(30); }
 }
 @keyframes logo {
-  0%   { opacity: 0; transform: scale(0.94); filter: blur(10px) drop-shadow(0 0 0 #fff); }
-  28%  { opacity: 1; transform: scale(1); filter: blur(0) drop-shadow(0 0 14px rgba(255, 255, 255, 0.55)); }
-  72%  { opacity: 1; transform: scale(1.015); filter: blur(0) drop-shadow(0 0 8px rgba(255, 255, 255, 0.35)); }
-  100% { opacity: 0; transform: scale(1.04); filter: blur(6px) drop-shadow(0 0 0 #fff); }
+  0%   { opacity: 0; transform: scale(0.97); filter: blur(5px); }
+  22%  { opacity: 1; transform: scale(1); filter: blur(0); }
+  78%  { opacity: 1; transform: scale(1.008); filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.02); filter: blur(3px); }
 }
-@keyframes shine {
-  from { background-position: 150% 0; }
-  to   { background-position: -50% 0; }
+@keyframes glow {
+  0%   { filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); }
+  40%  { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.7)); }
+  100% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)); }
+}
+@keyframes subIn {
+  from { opacity: 0; transform: translateY(8px); letter-spacing: 0.8em; }
+  to   { opacity: 1; transform: none; letter-spacing: 0.5em; }
 }
 
 .boot-skip {
